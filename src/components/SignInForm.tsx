@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+// import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
 
 const formSchema = z.object({
   password: z.string().min(3, {
@@ -36,39 +37,62 @@ export default function SignInForm() {
   });
 
   async function fnOnSubmit(data: FormData) {
-    console.log("Formulario enviado:", data);
+    try {
+      const response = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.status === 401) {
+        console.error("Error de autenticación");
+        return;
+      }
+
+      const responseData = await response.json();
+      console.log(responseData);
+
+      const recorridos = await fetch("/api/recorridos", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const recorridosData = await recorridos.json();
+      console.log(recorridosData);
+      if (responseData.session) {
+        // const user = SupabaseAuthClient.auth.user(); // Obtiene la información del usuario autenticado
+        // return user ? user.id : null;
+        // Almacenar datos en localStorage (no recomendado para datos sensibles)
+        // localStorage.setItem("user", JSON.stringify(responseData.user));
+        // localStorage.setItem("session", responseData.session);
+        // Redirigir al usuario
+        // router.push('/dashboard'); // Cambia a la ruta de destino deseada
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(fnOnSubmit)}>
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-white">Nombre</FormLabel>
-              <FormControl>
-                <Input
-                  className="font-clash font-normal text-md sm:text-xl bg-black block text-white bg-opacity-5 justify-between text-left gap-4 border-solid border-2 border-neon rounded-xl items-center px-4 py-1.5 shadow-[5px_5px_rgba(0,_98,_90,_0.4),_10px_10px_rgba(0,_98,_90,_0.3),_15px_15px_rgba(0,_98,_90,_0.2),_20px_20px_rgba(0,_98,_90,_0.1),_25px_25px_rgba(0,_98,_90,_0.05)]"
-                  placeholder="Gerardo"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-red-400 font-bold" />
-            </FormItem>
-          )}
-        />
+      <form
+        onSubmit={form.handleSubmit(fnOnSubmit)}
+        className="p-10 bg-white rounded-xl "
+      >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-white">Email</FormLabel>
+            <FormItem className="mt-4">
+              <FormLabel className="text-gris-800">Email</FormLabel>
               <FormControl>
                 <Input
-                  className="font-clash font-normal text-md sm:text-xl bg-black block text-white bg-opacity-5 justify-between text-left gap-4 border-solid border-2 border-neon rounded-xl items-center px-4 py-1.5 shadow-[5px_5px_rgba(0,_98,_90,_0.4),_10px_10px_rgba(0,_98,_90,_0.3),_15px_15px_rgba(0,_98,_90,_0.2),_20px_20px_rgba(0,_98,_90,_0.1),_25px_25px_rgba(0,_98,_90,_0.05)]"
-                  placeholder="gerardo@gmail.com"
+                  className="text-gris-600"
+                  placeholder="placeholder"
                   {...field}
                 />
               </FormControl>
@@ -76,11 +100,25 @@ export default function SignInForm() {
             </FormItem>
           )}
         />
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            className="mt-4 font-clash font-medium text-md sm:text-xl bg-neon block text-white bg-opacity-5 justify-between text-center gap-4 border-solid border-2 border-neon  items-center px-4 py-1.5 hover:shadow-[_0px_0px_15px_5px_rgba(0,255,174,0.2)] hover:bg-darkneon "
-          >
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem className="mt-4">
+              <FormLabel className="text-gris-800">Contraseña</FormLabel>
+              <FormControl>
+                <Input
+                  className="text-gris-600"
+                  placeholder="placeholder"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-red-400 font-bold" />
+            </FormItem>
+          )}
+        />
+        <div className="flex justify-center mt-10">
+          <Button type="submit" className="bg-verde-600 w-full">
             Iniciar
           </Button>
         </div>
