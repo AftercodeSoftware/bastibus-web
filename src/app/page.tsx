@@ -1,8 +1,8 @@
 "use client";
-import { createClient, Session } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import SignInForm from "@/components/SignInForm";
+import { createClient, Session } from "@supabase/supabase-js";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 
 // Inicializar el cliente de Supabase
 const supabase = createClient(
@@ -51,5 +51,18 @@ export default function Home() {
     console.log("Sesión:", session);
   }, []);
 
-  return <SignInForm />;
+  return (
+    <>
+      <div className="w-full h-fit p-4 bg-gris-950">
+        <h1 className="text-verde-100 text-2xl font-light">Aftercode</h1>
+        <h1 className="text-verde-200 text-2xl font-normal">Aftercode</h1>
+        <h1 className="text-verde-300 text-2xl font-medium">Aftercode</h1>
+        <h1 className="text-verde-400 text-2xl font-semibold">Aftercode</h1>
+        <h1 className="text-verde-500 text-2xl font-bold">Aftercode</h1>
+        <h1 className="text-verde-600 text-2xl font-extrabold">Aftercode</h1>
+        <h1 className="text-verde-700 text-2xl font-black">Aftercode</h1>
+      </div>
+      <SignInForm />
+    </>
+  );
 }
