@@ -6,9 +6,22 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export async function getRecorridos(token: string) {
+export async function getRecorridos(
+  token: string,
+  refresh_token: string,
+  role: string
+) {
   // Establecer la sesión con el token proporcionado
-  supabase.auth.setSession({ access_token: token, refresh_token: "" }); // Si no tienes refresh_token, puede dejarlo vacío
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.setSession({ access_token: token, refresh_token });
+  if (sessionError) {
+    console.error("Error setting session:", sessionError);
+  } else {
+    console.log("Session data:", sessionData);
+  }
+  supabase.auth.updateUser({
+    data: { role },
+  });
 
   // Realizar la consulta a la base de datos
   const { data, error } = await supabase.from("recorridos").select("*");
@@ -18,7 +31,7 @@ export async function getRecorridos(token: string) {
     throw error;
   }
 
-  console.log("Recorridos:", data);
+  // console.log("Recorridos:", data);
 
   return data;
 }
