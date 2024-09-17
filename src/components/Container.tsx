@@ -10,7 +10,7 @@ export default function Container({
   children: React.ReactNode;
 }) {
   return (
-    <Wrapper className={`max-w-[85%] m-auto ${className || ""}`}>
+    <Wrapper className={`max-w-[85%] m-auto ${className || " "}`}>
       {children}
     </Wrapper>
   );
