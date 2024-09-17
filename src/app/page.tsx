@@ -1,5 +1,6 @@
 "use client";
 import Container from "@/components/Container";
+import Input from "@/components/Input";
 import SignInForm from "@/components/SignInForm";
 import { supabase } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -49,6 +50,7 @@ export default function Home() {
 
   return (
     <Container>
+      <Input />
       <SignInForm />
     </Container>
   );
