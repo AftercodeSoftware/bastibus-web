@@ -2,10 +2,7 @@
 import Container from "@/components/Container";
 import Input from "@/components/Input";
 import SignInForm from "@/components/SignInForm";
-import { supabase } from "@/utils/supabase/client";
-import { Session } from "@supabase/supabase-js";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   // const [session, setSession] = useState<Session | null>(null);
@@ -50,8 +47,9 @@ export default function Home() {
 
   return (
     <Container>
-      <Input />
-      <SignInForm />
+      <Link href="/login" className="text-gris-950 text-4xl">
+        Login
+      </Link>
     </Container>
   );
 }
