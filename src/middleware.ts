@@ -3,8 +3,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  console.log("IN");
-  const token = req.cookies.get("authToken");
+  const token = req.cookies.get("access_token");
+  console.log(token);
 
   const protectedRoutes = ["/dashboard", "/profile", "/settings"];
 
