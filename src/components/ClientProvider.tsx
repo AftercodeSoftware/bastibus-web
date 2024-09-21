@@ -1,7 +1,7 @@
 // components/ClientProvider.tsx
 "use client";
 
-import useAuthStore from "@/stores/authStore";
+// import useAuthStore from "@/stores/authStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactNode, useState } from "react";
@@ -12,7 +12,7 @@ interface ClientProviderProps {
 
 const ClientProvider = ({ children }: ClientProviderProps) => {
   const [queryClient] = useState(() => new QueryClient());
-  const { setAuth, logout } = useAuthStore();
+  // const { setAuth, logout } = useAuthStore();
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,14 +1,46 @@
-import Container from "@/components/Container";
-// import Input from "@/components/Input";
-// import SignInForm from "@/components/SignInForm";
-import Link from "next/link";
+"use client";
 
-export default function Home() {
+import { FormEvent, useRef } from "react";
+
+const Home = () => {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const body = {
+      email: emailRef.current?.value,
+      password: passwordRef.current?.value,
+    };
+
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+
+    // Handle response if necessary
+    const { user } = await response.json();
+  }
+
   return (
-    <Container>
-      <Link href="/login" className="text-gris-950 text-4xl">
-        Login
-      </Link>
-    </Container>
+    <form onSubmit={onSubmit} className="text-verde-400">
+      <input
+        ref={emailRef}
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+      />
+      <input
+        ref={passwordRef}
+        type="password"
+        name="password"
+        placeholder="Password"
+        required
+      />
+      <button type="submit">Log in</button>
+    </form>
   );
-}
+};
+
+export default Home;

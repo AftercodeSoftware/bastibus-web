@@ -14,8 +14,10 @@ interface JWTToken {
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("access_token");
 
+  console.log("TOKEN!", token);
+
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
@@ -32,7 +34,7 @@ export function middleware(req: NextRequest) {
     }
     if (decodedToken.rol === "propietario") {
       if (isAdminRoute) {
-        return NextResponse.redirect(new URL("/admin", req.url));
+        return NextResponse.redirect(new URL("/propietario", req.url));
       }
       return NextResponse.next();
     }
@@ -45,5 +47,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/administrador/:path*", "/propietario/:path*"],
+  matcher: ["/admin/:path*", "/propietario/:path*"],
 };

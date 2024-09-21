@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   // delete cookie
@@ -11,6 +11,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       secure: process.env.NODE_ENV === "production",
       maxAge: -1, // 7 días
       path: "/",
+      sameSite: "lax",
     })
   );
 
