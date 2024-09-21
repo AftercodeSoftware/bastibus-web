@@ -2,7 +2,7 @@
 
 import { UserProvider } from "@/context/UserContext";
 // import { UserResponse } from "@/pages/api/me";
-import { decodeJWT, getUser } from "@/utils/user";
+import { getUser } from "@/utils/user";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
