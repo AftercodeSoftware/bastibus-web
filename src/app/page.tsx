@@ -50,7 +50,26 @@ export default function Home() {
 
   return (
     <Container>
-      <Input />
+      <Input 
+      type="password"
+      placeholder="pene"
+      disabled={false}
+      />
+      <Input 
+      type="text"
+      placeholder="pene"
+      disabled={false}
+      />
+      <Input 
+      type="email"
+      placeholder="pene"
+      disabled={true}
+      />
+      <Input 
+      type="password"
+      placeholder="pene"
+      disabled={false}
+      />
       <SignInForm />
     </Container>
   );
