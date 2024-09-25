@@ -1,9 +1,6 @@
-export interface JWTToken {
+export interface UserData {
   rol: string;
-  email: string;
   id: string;
-  iat: number;
-  exp: number;
 }
 
 export interface Usuario {
@@ -15,10 +12,18 @@ export interface Usuario {
   phone: string;
   created_at: string;
   auth_id: string;
-  rol: string;
+  manzana?: string;
+  lote?: string;
+  rol: "propietario" | "administrador";
 }
 
-export interface Propietario extends Usuario {
-  manzana: string;
-  lote: string;
+export interface JWTToken extends Usuario {
+  rol: "propietario" | "administrador";
+  "connect.sid": string;
+}
+
+export interface LoginResponse {
+  message: string;
+  rol: "propietario" | "administrador";
+  userData: Usuario;
 }
