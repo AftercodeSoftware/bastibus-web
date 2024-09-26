@@ -41,54 +41,19 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
         const data = await response.json();
 
-        if (data.user) {
-          setUser(data.user);
+        if (data) {
+          setUser(data);
         } else {
           setUser(null);
-          // router.replace("/");
+          router.replace("/");
         }
       } catch (error) {
-        console.log("error choto:", error);
         setUser(null);
-        // router.replace("/");
+        router.replace("/");
       } finally {
         setLoading(false);
       }
     };
-
-    // const checkUserSessionMock = async () => {
-    //   try {
-    //     const data: { user: Usuario } = {
-    //       user: {
-    //         id: "1",
-    //         dni: "441402249",
-    //         nombre: "Gabriel",
-    //         apellido: "Penes Diez",
-    //         manzana: "7",
-    //         lote: "16",
-    //         email: "gabsplat@gmail.com",
-    //         phone: "261510",
-    //         rol: "propietario",
-    //         created_at: "2021-09-29T00:00:00.000Z",
-    //         auth_id: "1",
-    //       },
-    //     };
-
-    //     if (data.user) {
-    //       setUser(data.user);
-    //     } else {
-    //       setUser(null);
-    //       router.replace("/");
-    //     }
-    //   } catch (error) {
-    //     setUser(null);
-    //     router.replace("/");
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
-    // checkUserSessionMock();
     checkUserSession();
   }, []);
 
@@ -106,6 +71,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     });
 
     const data = await response.json();
+
+    if (data.rol === "propietario") {
+      router.replace("/propietario");
+    } else if (data.rol === "administrador") {
+      router.replace("/admin");
+    }
 
     console.log("Data: ", data);
 

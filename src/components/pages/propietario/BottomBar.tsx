@@ -24,7 +24,7 @@ const links: RouteLink[] = [
 export default function BottomBar() {
   const path = usePathname();
   return (
-    <nav className="block absolute bottom-0 left-0 w-full bg-gris-50 rounded-tl-2xl rounded-tr-2xl h-20 border-t-2 border-verde-400">
+    <nav className="block sticky bottom-0 left-0 w-full bg-gris-50 rounded-tl-2xl rounded-tr-2xl h-20 border-t-2 ">
       <ul className="h-full flex justify-between items-center px-4 md:px-20">
         {links.map((link) => (
           <NavItem
@@ -45,15 +45,15 @@ function NavItem({ text, route, icon: Icon, active = false }: RouteLink) {
     <li>
       <Link
         href={route}
-        className={`cursor-pointer w-16 bg-slate-600  ${
-          active ? "text-verde-800 font-bold" : "text-gris-800 font-medium"
+        className={`cursor-pointer w-16  ${
+          active ? "text-verde-700 font-bold" : "text-gris-600 font-medium"
         }`}
       >
         <motion.div
           className="flex flex-col items-center "
           whileTap={{ scale: 0.8 }}
         >
-          <Icon size={24} />
+          <Icon className={active ? "text-verde-700" : ""} size={24} />
           <span className="text-sm">{text}</span>
         </motion.div>
       </Link>
