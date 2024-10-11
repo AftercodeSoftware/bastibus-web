@@ -27,3 +27,29 @@ export interface LoginResponse {
   rol: "propietario" | "administrador";
   userData: Usuario;
 }
+
+// Rides
+
+export type BusType = "reducido" | "normal" | "express";
+
+export interface BusRide {
+  id: string;
+  outboundTrip: {
+    start: { place: string; date: string };
+    end: { place: string; date: string };
+  };
+  returnTrip: {
+    start: { place: string; date: string };
+    end: { place: string; date: string };
+  };
+  type: BusType;
+}
+
+export interface UserTrip {
+  id: string;
+  trip: {
+    start: { place: string; date: string };
+    end: { place: string; date: string };
+  };
+  type: BusType;
+}
