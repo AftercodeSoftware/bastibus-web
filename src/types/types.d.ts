@@ -17,6 +17,13 @@ export interface Usuario {
   rol: "propietario" | "administrador";
 }
 
+export interface BasicUser {
+  id: string;
+  dni: string;
+  name: string;
+  type: "frecuente" | "eventual";
+}
+
 export interface JWTToken extends Usuario {
   rol: "propietario" | "administrador";
   "connect.sid": string;

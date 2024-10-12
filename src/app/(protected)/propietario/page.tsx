@@ -59,7 +59,6 @@ export default function Page() {
 
       <CurrentRideSection busRide={dummyCurrentRide} />
       <LastTripsSection trips={dummyUserTrips} />
-      <AuthorizationsSection />
     </main>
   );
 }
@@ -78,7 +77,7 @@ function CurrentRideSection({ busRide }: { busRide: BusRide }) {
 
 function LastTripsSection({ trips }: { trips: UserTrip[] }) {
   return (
-    <section className="mt-6">
+    <section className="mt-10">
       <h2 className="text-xl text-gris-950 flex items-center gap-2 mb-2 font-medium">
         <Navigation className="text-gris-600" />
         Tus ultimos viajes

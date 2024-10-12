@@ -15,9 +15,9 @@ interface RouteLink {
 
 const links: RouteLink[] = [
   { text: "Horarios", route: "/propietario/horarios", icon: Watch },
-  { text: "Historial", route: "/propietario/historial", icon: Clock },
-  { text: "Inicio", route: "/propietario", icon: House },
   { text: "Autorizar", route: "/propietario/autorizar", icon: DoorOpen },
+  { text: "Inicio", route: "/propietario", icon: House },
+  { text: "Historial", route: "/propietario/historial", icon: Clock },
   { text: "Perfil", route: "/propietario/perfil", icon: User },
 ];
 

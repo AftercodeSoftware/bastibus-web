@@ -51,14 +51,7 @@ export default function RideCard({ ride, uncuyo }: RideCardProps) {
             <span className="text-gray-600">{ride.outboundTrip.end.date}</span>
           </div>{" "}
         </div>
-        {uncuyo && (
-          <div className="flex items-center my-4">
-            <GitCommitHorizontal className="text-[#3362A0]/60 -mr-[2px]" />
-            <div className="w-fit py-1 px-2 h-fit rounded-xl border-2 border-[#3362A0]/60 text-[#3362A0] text-xs font-bold">
-              UNCUYO
-            </div>
-          </div>
-        )}
+        {uncuyo && <UNCuyoBadge />}
         {/* VUELTA */}
         <div>
           <div className="w-full">
@@ -72,6 +65,17 @@ export default function RideCard({ ride, uncuyo }: RideCardProps) {
             <span className="text-gray-600">{ride.returnTrip.end.date}</span>
           </div>{" "}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function UNCuyoBadge() {
+  return (
+    <div className="flex items-center my-4">
+      <GitCommitHorizontal className="text-[#3362A0]/60 -mr-[2px]" />
+      <div className="w-fit py-1 px-2 h-fit rounded-xl border-2 border-[#3362A0]/60 text-[#3362A0] text-xs font-bold">
+        UNCUYO
       </div>
     </div>
   );
