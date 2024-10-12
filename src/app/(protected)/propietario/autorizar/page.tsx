@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthorizationModal } from "@/components/pages/propietario/AuthorizationModal";
+import { NewAuthorizationDrawer } from "@/app/(protected)/propietario/autorizar/NewAuthorizationDrawer";
 import { BasicUser } from "@/types/types";
 import { useState } from "react";
 import AuthorizedCard from "./AuthorizedCard";
@@ -70,7 +70,7 @@ export default function Autorizar() {
         user={userBeingDeleted}
       />
       {modalOpen && <p>modal abierto</p>}
-      <AuthorizationModal open={modalOpen} setOpen={setModalOpen} />
+      <NewAuthorizationDrawer open={modalOpen} setOpen={setModalOpen} />
     </main>
   );
 }
