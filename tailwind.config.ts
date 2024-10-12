@@ -9,6 +9,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        "scale-in": {
+          "0%": { transform: "scale(0.2) rotate(40deg)" },
+          "100%": { transform: "scale(1)" },
+        },
+      },
+      animation: {
+        "scale-in": "scale-in 0.35s cubic-bezier(.31,.53,.7,1.29) both",
+      },
       colors: {
         verde: {
           "50": "#f7faec",

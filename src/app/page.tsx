@@ -1,76 +1,45 @@
-"use client";
 import Container from "@/components/Container";
-import Input from "@/components/Input";
-import SignInForm from "@/components/SignInForm";
-import { supabase } from "@/utils/supabase/client";
-import { Session } from "@supabase/supabase-js";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import LoginCard from "@/components/pages/start-login/LoginCard";
+import LoginForm from "@/components/pages/start-login/LoginForm";
+import { Bus, Hand, HandHeart } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
-  // const [session, setSession] = useState<Session | null>(null);
-
-  // Función para iniciar sesión
-  // async function signInWithEmail() {
-  //   try {
-  //     const { data, error } = await supabase.auth.signInWithPassword({
-  //       email: "germhidalgo@gmail.com",
-  //       password: "44140249",
-  //     });
-
-  //     if (error) {
-  //       console.error(error);
-  //       return;
-  //     }
-
-  //     if (data?.session) {
-  //       console.log("Sesión iniciada:", data);
-  //       const { access_token } = data.session;
-
-  //       // Decodificar el token JWT
-  //       try {
-  //         const decodedToken = jwtDecode(access_token);
-  //         console.log("Token decodificado:", decodedToken);
-  //         console.log((decodedToken as { user_role: string }).user_role);
-  //         // setUserRole(role);
-  //       } catch (decodeError) {
-  //         console.error("Error al decodificar el token JWT", decodeError);
-  //       }
-  //     }
-  //   } catch (e) {
-  //     console.error("Error inesperado", e);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   signInWithEmail();
-
-  //   console.log("Sesión:", session);
-  // }, []);
-
+const Home = () => {
   return (
-    <Container>
-      <Input 
-      type="password"
-      placeholder="pene"
-      disabled={false}
-      />
-      <Input 
-      type="text"
-      placeholder="pene"
-      disabled={false}
-      />
-      <Input 
-      type="email"
-      placeholder="pene"
-      disabled={true}
-      />
-      <Input 
-      type="password"
-      placeholder="pene"
-      disabled={false}
-      />
-      <SignInForm />
-    </Container>
+    <div className="items-stretch h-full">
+      <div className="h-1/3 flex items-center justify-center">
+        <Image src="/logo.png" alt="logo" width={160} height={160} />
+      </div>
+      <Container className="flex flex-col items-center">
+        <LoginCard>
+          <div className="mb-8">
+            <Bus
+              className="mx-auto text-verde-500 animate-scale-in"
+              size={64}
+            />
+            <h1 className="text-center text-4xl text-verde-900 font-bold">
+              BastiBus
+            </h1>
+            <span className="block text-center text-gris-800 text-sm mt-1">
+              Completá tus datos y empezá a operar.
+            </span>
+          </div>
+          <LoginForm />
+        </LoginCard>
+        <span className="block my-4 text-gris-400 text-center">
+          Si todavía no tenes usuario{" "}
+          <Link
+            href="/sign-up"
+            className="text-verde-600 font-bold cursor-pointer"
+          >
+            solicitalo acá
+          </Link>
+          .
+        </span>
+      </Container>
+    </div>
   );
-}
+};
+
+export default Home;
