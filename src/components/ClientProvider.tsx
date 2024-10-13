@@ -12,12 +12,11 @@ interface ClientProviderProps {
 
 const ClientProvider = ({ children }: ClientProviderProps) => {
   const [queryClient] = useState(() => new QueryClient());
-  // const { setAuth, logout } = useAuthStore();
 
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

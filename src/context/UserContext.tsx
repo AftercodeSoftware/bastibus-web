@@ -31,29 +31,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        // const response = await fetch(
-        //   `${process.env.NEXT_PUBLIC_SERVER_IP}/auth/status`,
-        //   {
-        //     method: "GET",
-        //     credentials: "include",
-        //   }
-        // );
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_IP}/auth/status`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
-        // const data = await response.json();
-
-        const data: Usuario = {
-          id: "1",
-          dni: "43637470",
-          nombre: "Gabriel",
-          apellido: "Pérez Diez",
-          email: "gabsplat@gmail.com",
-          phone: "1160000000",
-          created_at: "2021-10-10",
-          auth_id: "1",
-          manzana: "A",
-          lote: "22",
-          rol: "propietario",
-        };
+        const data = await response.json();
 
         if (data) {
           setUser(data);
