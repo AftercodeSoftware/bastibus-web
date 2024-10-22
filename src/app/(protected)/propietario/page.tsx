@@ -4,8 +4,10 @@ import RideCard from "@/components/pages/propietario/RideCard";
 import TripCard from "@/components/pages/propietario/TripCard";
 import { useUser } from "@/context/UserContext";
 import { BusRide, UserTrip } from "@/types/types";
+import { getRecorridos, getUltimosViajes } from "@/utils/clientPromises";
+import { useQuery } from "@tanstack/react-query";
 import { BusFront, IdCard, Navigation } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 const dummyCurrentRide: BusRide = {
   id: "1",
@@ -42,7 +44,28 @@ const dummyUserTrips: UserTrip[] = [
 export default function Page() {
   const { user } = useUser();
 
-  console.log(user);
+  const {
+    isPending: isPendingRecorridos,
+    error: errorRecorridos,
+    data: recorridos,
+  } = useQuery({
+    queryKey: ["recorridos"],
+    queryFn: () => getRecorridos(),
+  });
+  const {
+    isPending: isPendingUltimosViajes,
+    error: errorUltimosViajes,
+    data: ultimosViajes,
+  } = useQuery({
+    queryKey: ["ultimos-viajes"],
+    // queryFn: () => getUltimosViajes("1", 4),
+    queryFn: () => getUltimosViajes(user?.id, 4),
+    enabled: !!user?.id,
+  });
+
+  useEffect(() => {
+    console.log({ recorridos, ultimosViajes });
+  }, [recorridos, ultimosViajes]);
 
   return (
     <main>

@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Drawer } from "vaul";
 import { z } from "zod";
+import { DatePicker } from "./DatePicker";
 
 interface AuthorizationModalProps {
   open: boolean;
@@ -25,7 +26,7 @@ export function NewAuthorizationDrawer({
       <Drawer.Trigger asChild>Open</Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Handle />
-        <Drawer.Content className="text-black text-center fixed z-10 bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[90%]">
+        <Drawer.Content className="text-black text-center fixed z-10 bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[80%]">
           <Drawer.Handle className="my-4" />
           <PageContainer className="py-4">
             <h2 className="text-gris-800 font-medium text-xl">
@@ -59,24 +60,34 @@ export const FormDataSchema = z.object({
   authorizationType: z.enum(["eventual", "frecuente"], {
     message: "Debes seleccionar un tipo de autorización.",
   }),
+  date: z
+    .date()
+    .optional()
+    .refine((date) => {
+      if (!date) return true;
+      return date >= new Date();
+    }, "La fecha debe ser mayor o igual a la fecha actual."),
 });
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
 function NewAuthorizationForm() {
   const {
+    control,
     register,
     handleSubmit,
-    watch,
     reset,
+    watch,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
+  const currentAuthorizationType = watch("authorizationType");
+
   const processForm: SubmitHandler<Inputs> = async (data) => {
     try {
-      alert("Data submitted successfully");
+      alert("Data submitted successfully, check the console for the data.");
       console.log(data);
     } catch (e) {
       console.log(e);
@@ -108,7 +119,6 @@ function NewAuthorizationForm() {
       >
         <Input placeholder="Apellido..." id="apellido" />
       </FormField>
-
       <FormField
         errorMessage={errors.dni?.message}
         register={{ ...register("dni") }}
@@ -122,9 +132,34 @@ function NewAuthorizationForm() {
         register={register}
         errorMessage={errors.authorizationType?.message}
       />
+
+      {currentAuthorizationType === "eventual" && (
+        <div className="mb-4">
+          <p className="block text-sm font-medium text-muted-foreground mb-1">
+            Fechas autorizadas
+          </p>
+          <Controller
+            control={control}
+            name="date"
+            render={({ field }) => (
+              <DatePicker
+                date={field.value}
+                setDate={(date) => field.onChange(date)}
+              />
+            )}
+          />
+          {errors.date && (
+            <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>
+          )}
+        </div>
+      )}
       <Button type="submit">Enviar</Button>
     </form>
   );
+}
+
+function AuthorizationDateSelector({}) {
+  return <div>asd</div>;
 }
 
 function AuthorizationTypeSelector({
@@ -135,7 +170,7 @@ function AuthorizationTypeSelector({
   errorMessage?: string;
 }) {
   return (
-    <div>
+    <div className="mb-4">
       <label htmlFor="tipoAutorizacion" className="text-gris-600">
         Tipo de autorizacion
       </label>

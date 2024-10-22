@@ -45,7 +45,7 @@ function NavItem({ text, route, icon: Icon, active = false }: RouteLink) {
     <li>
       <Link
         href={route}
-        className={`cursor-pointer w-16  ${
+        className={`cursor-pointer block w-16  ${
           active ? "text-verde-700 font-bold" : "text-gris-600 font-medium"
         }`}
       >

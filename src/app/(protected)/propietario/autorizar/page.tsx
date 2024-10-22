@@ -1,7 +1,9 @@
 "use client";
 
 import { NewAuthorizationDrawer } from "@/app/(protected)/propietario/autorizar/NewAuthorizationDrawer";
+import Button from "@/components/Button";
 import { BasicUser } from "@/types/types";
+import { UserPlus } from "lucide-react";
 import { useState } from "react";
 import AuthorizedCard from "./AuthorizedCard";
 import { DeleteUserDrawer } from "./DeleteUserDrawer";
@@ -35,7 +37,7 @@ export default function Autorizar() {
   );
 
   return (
-    <main>
+    <main className="relative h-full">
       <img
         src="/logo_trebol.png"
         alt="Imagen de perfil"
@@ -58,10 +60,10 @@ export default function Autorizar() {
         ))}
       </section>
       <button
-        className="w-full h-40 bg-gris-100"
+        className="absolute right-0 bottom-8 w-16 h-16 rounded-full flex items-center justify-center bg-verde-500"
         onClick={() => setModalOpen((prev) => !prev)}
       >
-        Autorizaciones
+        <UserPlus className="h-8 w-8 text-white" />
       </button>
 
       <DeleteUserDrawer
@@ -69,7 +71,6 @@ export default function Autorizar() {
         setOpen={setDeletingUser}
         user={userBeingDeleted}
       />
-      {modalOpen && <p>modal abierto</p>}
       <NewAuthorizationDrawer open={modalOpen} setOpen={setModalOpen} />
     </main>
   );
