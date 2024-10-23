@@ -40,23 +40,42 @@ export interface LoginResponse {
 export type BusType = "reducido" | "normal" | "express";
 
 export interface BusRide {
-  id: string;
-  outboundTrip: {
-    start: { place: string; date: string };
-    end: { place: string; date: string };
-  };
-  returnTrip: {
-    start: { place: string; date: string };
-    end: { place: string; date: string };
-  };
-  type: BusType;
+  id: number;
+  llegadabarrio: string; // Time in HH:MM:SS format
+  llegadadestino: string; // Time in HH:MM:SS format
+  observacion: string | null; // Nullable field
+  salidabarrio: string; // Time in HH:MM:SS format
+  salidadestino: string; // Time in HH:MM:SS format
+  created_at: string; // Date in ISO format
+  tipo: BusType;
 }
 
 export interface UserTrip {
-  id: string;
-  trip: {
-    start: { place: string; date: string };
-    end: { place: string; date: string };
+  id: number;
+  recorrido_id: number;
+  recorrido: {
+    tipo: BusType;
   };
-  type: BusType;
+  chofer_id: number;
+  idavuelta: number;
+  propietario_id: number;
+  autorizacion_id: number;
+  coordenadasubida: string;
+  horasubida: string;
+  coordenadabajada: string;
+  horabajada: string;
+  created_at: string; // Date in ISO format
+  estado: string;
+}
+
+export interface Authorization {
+  id: number;
+  propietario_id: number;
+  visita_id: number;
+  tipo: string;
+  dia: string; // Date in "YYYY-MM-DD" format
+  desde: string; // Time or datetime, depending on your data structure
+  hasta: string; // Time or datetime, depending on your data structure
+  usos: number;
+  created_at: string; // Date in ISO format
 }

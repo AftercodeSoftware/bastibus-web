@@ -3,7 +3,6 @@ import { Bus, BusFront, GitCommitHorizontal } from "lucide-react";
 
 interface RideCardProps {
   ride: BusRide;
-  uncuyo: boolean;
 }
 
 const cardColors = {
@@ -12,21 +11,22 @@ const cardColors = {
   express: "#6524AA",
 };
 
-export default function RideCard({ ride, uncuyo }: RideCardProps) {
+export default function RideCard({ ride }: RideCardProps) {
+  console.log("Ride:", ride);
   return (
     <div
-      style={{ borderColor: cardColors[ride.type] }}
+      style={{ borderColor: cardColors[ride.tipo] }}
       className="flex rounded-xl overflow-hidden w-full bg-white min-h-40 shadow-md border"
     >
       <div
         style={{
-          backgroundColor: cardColors[ride.type],
+          backgroundColor: cardColors[ride.tipo],
         }}
         className={`relative justify-between w-8 text-white`}
       >
         {/* ! |v REFACTOR */}
         <span className="absolute transform left-1/2 -translate-x-1/2 origin-center -rotate-90 top-10 text-sm font-semibold">
-          {ride.type.toUpperCase()}
+          {ride.tipo.toUpperCase()}
         </span>{" "}
         {/* TIPO DE MICRO */}
         <BusFront
@@ -39,30 +39,28 @@ export default function RideCard({ ride, uncuyo }: RideCardProps) {
         <div>
           <div className="flex justify-between items-center w-full">
             <span className="text-md font-semibold">
-              {ride.outboundTrip.start.place} - {ride.outboundTrip.end.place}
+              La Bastilla - Plaza Independencia
             </span>
           </div>
           {/* HORARIOS IDA */}
           <div className="flex gap-3 mt-1 font-medium px-4">
-            <span className="text-gray-600">
-              {ride.outboundTrip.start.date}
-            </span>
+            <span className="text-gray-600">{ride.salidabarrio}</span>
             <div className="flex-1 border-gris-400 border-t border-dashed h-0 self-center"></div>
-            <span className="text-gray-600">{ride.outboundTrip.end.date}</span>
+            <span className="text-gray-600">{ride.llegadadestino}</span>
           </div>{" "}
         </div>
-        {uncuyo && <UNCuyoBadge />}
+        {ride.observacion && <UNCuyoBadge />}
         {/* VUELTA */}
         <div>
           <div className="w-full">
             <span className="text-md font-semibold">
-              {ride.returnTrip.start.place} - {ride.returnTrip.end.place}
+              Plaza Independencia - La Bastilla
             </span>
           </div>
           <div className="flex gap-3 mt-1 font-medium px-4">
-            <span className="text-gray-600">{ride.returnTrip.start.date}</span>
+            <span className="text-gray-600">{ride.salidadestino}</span>
             <div className="flex-1 border-gris-400 border-t border-dashed h-0 self-center"></div>
-            <span className="text-gray-600">{ride.returnTrip.end.date}</span>
+            <span className="text-gray-600">{ride.llegadabarrio}</span>
           </div>{" "}
         </div>
       </div>

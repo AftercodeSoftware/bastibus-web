@@ -2,9 +2,11 @@
 
 import { NewAuthorizationDrawer } from "@/app/(protected)/propietario/autorizar/NewAuthorizationDrawer";
 import Button from "@/components/Button";
-import { BasicUser } from "@/types/types";
+import { Authorization, BasicUser } from "@/types/types";
+import { getAutorizados } from "@/utils/clientPromises";
+import { useQuery } from "@tanstack/react-query";
 import { UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthorizedCard from "./AuthorizedCard";
 import { DeleteUserDrawer } from "./DeleteUserDrawer";
 
@@ -32,8 +34,27 @@ const dummyAuthorizedUsers: BasicUser[] = [
 export default function Autorizar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [isDeletingUser, setDeletingUser] = useState(false);
-  const [userBeingDeleted, setUserBeingDeleted] = useState<BasicUser | null>(
-    null
+  const [userBeingDeleted, setUserBeingDeleted] = useState<any | null>(null);
+
+  const {
+    isPending,
+    error,
+    data: autorizados,
+  } = useQuery({
+    queryKey: ["autorizados"],
+    queryFn: () => getAutorizados(),
+  });
+
+  useEffect(() => {
+    console.log({ autorizados });
+  }, [autorizados]);
+
+  const autorizadosFrecuentes: Authorization[] = autorizados?.filter(
+    (autorizado: Authorization) => autorizado.tipo === "frecuente"
+  );
+
+  const autorizadosEventuales: Authorization[] = autorizados?.filter(
+    (autorizado: Authorization) => autorizado.tipo === "eventual"
   );
 
   return (
@@ -44,20 +65,45 @@ export default function Autorizar() {
         width={50}
         height={50}
       />
-      <section className="mt-10 flex flex-col gap-4">
-        {dummyAuthorizedUsers.map((user) => (
-          <AuthorizedCard
-            key={user.id}
-            id={user.id}
-            name={user.name}
-            dni={user.dni}
-            type={user.type}
-            deleteHandler={() => {
-              setUserBeingDeleted(user);
-              setDeletingUser(true);
-            }}
-          />
-        ))}
+      <h2 className="text-xl text-gris-950 flex items-center gap-2 font-bold mt-2">
+        Visitas frecuentes
+      </h2>
+      <section className="mt-2 flex flex-col gap-4">
+        {autorizadosFrecuentes &&
+          autorizadosFrecuentes.map((autorizado) => (
+            <AuthorizedCard
+              key={"autorizado-frecuente-" + autorizado.id}
+              visita_id={autorizado.visita_id}
+              id={autorizado.id}
+              // name={user.name}
+              // dni={autorizado.dni}
+              tipo={autorizado.tipo}
+              deleteHandler={() => {
+                setUserBeingDeleted(autorizado);
+                setDeletingUser(true);
+              }}
+            />
+          ))}
+      </section>
+      <h2 className="text-xl text-gris-950 flex items-center gap-2 font-bold mt-6">
+        Visitas eventuales
+      </h2>
+      <section className="mt-2 flex flex-col gap-4">
+        {autorizadosEventuales &&
+          autorizadosEventuales.map((autorizado) => (
+            <AuthorizedCard
+              key={"autorizado-frecuente-" + autorizado.id}
+              visita_id={autorizado.visita_id}
+              id={autorizado.id}
+              // name={user.name}
+              // dni={autorizado.dni}
+              tipo={autorizado.tipo}
+              deleteHandler={() => {
+                setUserBeingDeleted(autorizado);
+                setDeletingUser(true);
+              }}
+            />
+          ))}
       </section>
       <button
         className="absolute right-0 bottom-8 w-16 h-16 rounded-full flex items-center justify-center bg-verde-500"

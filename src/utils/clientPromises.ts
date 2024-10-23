@@ -10,21 +10,13 @@ export async function getRecorridos() {
   }).then((res) => res.json());
 }
 
-export async function getUltimosViajes(
-  userId: string | undefined,
-  amount?: number
-) {
-  console.log(userId);
-  if (!userId) {
-    return ["No user ID provided"];
-  }
-  let url = `${process.env.NEXT_PUBLIC_SERVER_IP}/movimientos/propietario/${userId}`;
+export async function getUltimosViajes(amount?: number) {
+  let url = `${process.env.NEXT_PUBLIC_SERVER_IP}/movimientos/propietario`;
   if (amount) {
     const query = new URLSearchParams({ limit: amount.toString() });
     url += "?" + query.toString();
   }
 
-  console.log("URL:", url);
   return fetch(url || "", {
     method: "GET",
     headers: {
@@ -32,4 +24,17 @@ export async function getUltimosViajes(
     },
     credentials: "include",
   }).then((res) => res.json());
+}
+
+export async function getAutorizados() {
+  return fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_IP}/autorizaciones/propietario` || "",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  ).then((res) => res.json());
 }

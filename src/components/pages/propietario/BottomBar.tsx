@@ -24,7 +24,7 @@ const links: RouteLink[] = [
 export default function BottomBar() {
   const path = usePathname();
   return (
-    <nav className="block sticky bottom-0 left-0 w-full bg-gris-50 rounded-tl-2xl rounded-tr-2xl h-20 border-t-2 ">
+    <nav className="block fixed bottom-0 left-0 w-full bg-gris-50 rounded-tl-2xl rounded-tr-2xl h-20 border-t-2 ">
       <ul className="h-full flex justify-between items-center px-4 md:px-20">
         {links.map((link) => (
           <NavItem

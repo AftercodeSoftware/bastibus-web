@@ -9,38 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import { BusFront, IdCard, Navigation } from "lucide-react";
 import React, { useEffect } from "react";
 
-const dummyCurrentRide: BusRide = {
-  id: "1",
-  outboundTrip: {
-    start: { place: "La Bastilla", date: "12:00" },
-    end: { place: "Plaza Independencia", date: "14:00" },
-  },
-  returnTrip: {
-    start: { place: "Plaza Independencia", date: "12:00" },
-    end: { place: "La Bastilla", date: "14:00" },
-  },
-  type: "normal",
-};
-
-const dummyUserTrips: UserTrip[] = [
-  {
-    id: "1",
-    trip: {
-      start: { place: "Plaza España", date: "12:00" },
-      end: { place: "Plaza Italia", date: "12:12" },
-    },
-    type: "reducido",
-  },
-  {
-    id: "2",
-    trip: {
-      start: { place: "La Bastilla", date: "10:16" },
-      end: { place: "Plaza Independencia", date: "10:40" },
-    },
-    type: "express",
-  },
-];
-
 export default function Page() {
   const { user } = useUser();
 
@@ -58,8 +26,7 @@ export default function Page() {
     data: ultimosViajes,
   } = useQuery({
     queryKey: ["ultimos-viajes"],
-    // queryFn: () => getUltimosViajes("1", 4),
-    queryFn: () => getUltimosViajes(user?.id, 4),
+    queryFn: () => getUltimosViajes(4),
     enabled: !!user?.id,
   });
 
@@ -80,8 +47,8 @@ export default function Page() {
         {user?.nombre} {user?.apellido}
       </p>
 
-      <CurrentRideSection busRide={dummyCurrentRide} />
-      <LastTripsSection trips={dummyUserTrips} />
+      {!isPendingRecorridos && <CurrentRideSection busRide={recorridos[0]} />}
+      {!isPendingUltimosViajes && <LastTripsSection trips={ultimosViajes} />}
     </main>
   );
 }
@@ -93,7 +60,7 @@ function CurrentRideSection({ busRide }: { busRide: BusRide }) {
         <BusFront size={24} className="text-gris-800" />
         Proximo recorrido
       </h2>
-      <RideCard ride={busRide} uncuyo />
+      <RideCard ride={busRide} />
     </section>
   );
 }

@@ -4,22 +4,24 @@ import { motion } from "framer-motion";
 import { Trash2, TrashIcon } from "lucide-react";
 import React from "react";
 
-interface AuthorizedCardProps extends BasicUser {
+interface AuthorizedCardProps {
+  id: number;
+  visita_id: number;
+  tipo: string;
   deleteHandler: () => void;
 }
 
 export default function AuthorizedCard({
   id,
-  name,
-  dni,
-  type,
+  visita_id,
+  tipo,
   deleteHandler,
 }: AuthorizedCardProps) {
   return (
     <div className="relative flex px-6 pt-6 pb-7 justify-between rounded-xl border border-b-0 border-gris-200 shadow-lg overflow-hidden ">
       <div className="">
-        <p className="font-bold text-lg">{name}</p>
-        <p className="text-sm text-gris-600">{dni}</p>
+        <p className="font-bold text-lg">{visita_id}</p>
+        <p className="text-sm text-gris-600">aca iria el dni</p>
       </div>
       <motion.button
         whileTap={{ scale: 0.9 }}
@@ -29,7 +31,7 @@ export default function AuthorizedCard({
         <Trash2 className="text-error" />
       </motion.button>
       <div
-        style={{ backgroundColor: type === "eventual" ? "#3675C2" : "#D6973F" }}
+        style={{ backgroundColor: tipo === "eventual" ? "#3675C2" : "#D6973F" }}
         className="absolute bottom-0 left-0 h-3 bg-blue-500 w-full"
       ></div>
     </div>

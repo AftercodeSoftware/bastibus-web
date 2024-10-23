@@ -1,36 +1,37 @@
 "use client";
 
+import RideCard from "@/components/pages/propietario/RideCard";
+import { getRecorridos } from "@/utils/clientPromises";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function Horarios() {
-  const { isPending, error, data } = useQuery({
+  const {
+    isPending,
+    error,
+    data: recorridos,
+  } = useQuery({
     queryKey: ["recorridos"],
-    queryFn: () =>
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/recorridos` || "", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      }).then((res) => res.json()),
+    queryFn: () => getRecorridos(),
   });
 
   return (
     <div>
-      Horarios
-      <div className="flex flex-col gap-3">
-        {data?.map((recorrido: any) => (
-          <div
-            key={"recorrido-" + recorrido.id}
-            className="flex flex-col gap-1"
-          >
-            <span>{recorrido.llegadabarrio}</span>
-            <span>{recorrido.llegadadestino}</span>
-            <span>{recorrido.salidabarrio}</span>
-            <span>{recorrido.salidadestino}</span>
-          </div>
-        ))}
+      <img
+        src="/logo_trebol.png"
+        alt="Imagen de perfil"
+        width={50}
+        height={50}
+      />
+      <div className="flex flex-col gap-3 pb-24 mt-2">
+        {!isPending &&
+          !error &&
+          recorridos.map((recorrido: any) => (
+            <RideCard
+              key={"horario-recorrido-" + recorrido.id}
+              ride={recorrido}
+            />
+          ))}
       </div>
     </div>
   );

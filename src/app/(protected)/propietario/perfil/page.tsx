@@ -2,22 +2,30 @@
 
 import Button from "@/components/Button";
 import { useUser } from "@/context/UserContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function Perfil() {
+  const router = useRouter();
   const { user } = useUser();
 
-  const sendPene = async () => {
-    const response = await fetch("/api/auth/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
+  const logout = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_IP}/logout`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
     console.log(response);
-    redirect("/propietario");
+    if (!response.ok) {
+      console.error("Error al cerrar sesión");
+      return;
+    }
+    router.replace("/");
   };
 
   return (
@@ -62,7 +70,7 @@ export default function Perfil() {
           </div>
         </div>
       </div>
-      <Button secondary type="button" className="w-full" onClick={sendPene}>
+      <Button secondary type="button" className="w-full" onClick={logout}>
         Cerrar sesión
       </Button>
     </main>
