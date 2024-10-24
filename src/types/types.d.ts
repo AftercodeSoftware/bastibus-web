@@ -12,9 +12,18 @@ export interface Usuario {
   phone: string;
   created_at: string;
   auth_id: string;
-  manzana?: string;
-  lote?: string;
   rol: "propietario" | "administrador";
+  password?: string;
+}
+
+export interface Administrador extends Usuario {
+  rol: "administrador";
+}
+
+export interface Propietario extends Usuario {
+  manzana: string;
+  lote: string;
+  rol: "propietario";
 }
 
 export interface BasicUser {

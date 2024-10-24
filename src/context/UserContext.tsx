@@ -75,7 +75,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     if (data.rol === "propietario") {
       router.replace("/propietario");
     } else if (data.rol === "administrador") {
-      router.replace("/admin");
+      router.replace("/admin/dashboard");
     }
 
     console.log("Data: ", data);

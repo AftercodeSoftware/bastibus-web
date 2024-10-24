@@ -53,7 +53,7 @@ function SignUpForm() {
     }
 
     if (result.rol === "administrador") {
-      router.push("/admin");
+      router.push("/admin/dashboard");
     } else if (result.rol === "propietario") {
       router.push("/propietario");
     }

@@ -7,7 +7,7 @@ import React from "react";
 import Header from "./Header";
 import Navbar from "./Navbar";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,7 +22,6 @@ export default async function RootLayout({
             {children}
           </div>
         </div>
-        {children}
       </TooltipProvider>
     </ProtectedLayout>
   );
