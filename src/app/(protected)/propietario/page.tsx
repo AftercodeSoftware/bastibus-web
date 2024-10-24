@@ -4,45 +4,35 @@ import RideCard from "@/components/pages/propietario/RideCard";
 import TripCard from "@/components/pages/propietario/TripCard";
 import { useUser } from "@/context/UserContext";
 import { BusRide, UserTrip } from "@/types/types";
+import { getRecorridos, getUltimosViajes } from "@/utils/clientPromises";
+import { useQuery } from "@tanstack/react-query";
 import { BusFront, IdCard, Navigation } from "lucide-react";
-import React from "react";
-
-const dummyCurrentRide: BusRide = {
-  id: "1",
-  outboundTrip: {
-    start: { place: "La Bastilla", date: "12:00" },
-    end: { place: "Plaza Independencia", date: "14:00" },
-  },
-  returnTrip: {
-    start: { place: "Plaza Independencia", date: "12:00" },
-    end: { place: "La Bastilla", date: "14:00" },
-  },
-  type: "normal",
-};
-
-const dummyUserTrips: UserTrip[] = [
-  {
-    id: "1",
-    trip: {
-      start: { place: "Plaza España", date: "12:00" },
-      end: { place: "Plaza Italia", date: "12:12" },
-    },
-    type: "reducido",
-  },
-  {
-    id: "2",
-    trip: {
-      start: { place: "La Bastilla", date: "10:16" },
-      end: { place: "Plaza Independencia", date: "10:40" },
-    },
-    type: "express",
-  },
-];
+import React, { useEffect } from "react";
 
 export default function Page() {
   const { user } = useUser();
 
-  console.log(user);
+  const {
+    isPending: isPendingRecorridos,
+    error: errorRecorridos,
+    data: recorridos,
+  } = useQuery({
+    queryKey: ["recorridos"],
+    queryFn: () => getRecorridos(),
+  });
+  const {
+    isPending: isPendingUltimosViajes,
+    error: errorUltimosViajes,
+    data: ultimosViajes,
+  } = useQuery({
+    queryKey: ["ultimos-viajes"],
+    queryFn: () => getUltimosViajes(4),
+    enabled: !!user?.id,
+  });
+
+  useEffect(() => {
+    console.log({ recorridos, ultimosViajes });
+  }, [recorridos, ultimosViajes]);
 
   return (
     <main>
@@ -57,8 +47,8 @@ export default function Page() {
         {user?.nombre} {user?.apellido}
       </p>
 
-      <CurrentRideSection busRide={dummyCurrentRide} />
-      <LastTripsSection trips={dummyUserTrips} />
+      {!isPendingRecorridos && <CurrentRideSection busRide={recorridos[0]} />}
+      {!isPendingUltimosViajes && <LastTripsSection trips={ultimosViajes} />}
     </main>
   );
 }
@@ -70,7 +60,7 @@ function CurrentRideSection({ busRide }: { busRide: BusRide }) {
         <BusFront size={24} className="text-gris-800" />
         Proximo recorrido
       </h2>
-      <RideCard ride={busRide} uncuyo />
+      <RideCard ride={busRide} />
     </section>
   );
 }
