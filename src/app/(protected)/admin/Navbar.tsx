@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { BusFront, Home, Settings } from "lucide-react";
 
@@ -15,7 +16,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 interface RouteLink {
   text: string;
   route: string;
@@ -26,10 +28,33 @@ interface RouteLink {
 export default function Navbar() {
   const path = usePathname();
 
+  const router = useRouter();
+  const { user } = useUser();
+
   const links: RouteLink[] = [
     { text: "Dashboard", route: "/admin/dashboard", icon: Home },
     { text: "Recorridos", route: "/admin/recorridos", icon: BusFront },
   ];
+
+  const logout = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_IP}/logout`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    console.log(response);
+    if (!response.ok) {
+      console.error("Error al cerrar sesión");
+      return;
+    }
+    router.replace("/");
+  };
+
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -44,7 +69,7 @@ export default function Navbar() {
         ))}
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Tooltip>
+        {/* <Tooltip>
           <TooltipTrigger asChild>
             <Link
               href="#"
@@ -54,31 +79,25 @@ export default function Navbar() {
               <span className="sr-only">Settings</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Settings</TooltipContent>
-        </Tooltip>
+          {/* <TooltipContent side="right">Settings</TooltipContent> */}
+        {/* </Tooltip> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
               size="icon"
-              className="overflow-hidden rounded-full"
+              className="overflow-hidden rounded-full bg-verde-800 flex items-center justify-center font-semibold text-3xl text-white"
             >
-              <img
-                src="https://placehold.co/100x100"
-                width={36}
-                height={36}
-                alt="Avatar"
-                className="overflow-hidden rounded-full"
-              />
+              {user?.nombre[0]}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuItem>Support</DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>Cerrar Sesión</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </nav>
@@ -102,7 +121,7 @@ function NavItem({ text, route, icon: Icon, active = false }: RouteLink) {
           <span className="sr-only">{text}</span>
         </Link>
       </TooltipTrigger>
-      <TooltipContent side="right">text</TooltipContent>
+      <TooltipContent side="right">{text}</TooltipContent>
     </Tooltip>
   );
 }
