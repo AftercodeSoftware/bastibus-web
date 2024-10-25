@@ -4,37 +4,22 @@ import { NewAuthorizationDrawer } from "@/app/(protected)/propietario/autorizar/
 import Button from "@/components/Button";
 import { Authorization, BasicUser } from "@/types/types";
 import { getAutorizados } from "@/utils/clientPromises";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import AuthorizedCard from "./AuthorizedCard";
 import { DeleteUserDrawer } from "./DeleteUserDrawer";
 
-const dummyAuthorizedUsers: BasicUser[] = [
-  {
-    id: "1",
-    dni: "12345678",
-    name: "Gabriel",
-    type: "frecuente",
-  },
-  {
-    id: "2",
-    dni: "12345678",
-    name: "Mati",
-    type: "eventual",
-  },
-  {
-    id: "3",
-    dni: "12345678",
-    name: "Ger",
-    type: "eventual",
-  },
-];
+export interface AmountOfAutorizadosByType {
+  frecuente: number;
+  eventual: number;
+}
 
 export default function Autorizar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [isDeletingUser, setDeletingUser] = useState(false);
-  const [userBeingDeleted, setUserBeingDeleted] = useState<any | null>(null);
+  const [userBeingDeleted, setUserBeingDeleted] =
+    useState<Authorization | null>(null);
 
   const {
     isPending,
@@ -45,10 +30,6 @@ export default function Autorizar() {
     queryFn: () => getAutorizados(),
   });
 
-  useEffect(() => {
-    console.log({ autorizados });
-  }, [autorizados]);
-
   const autorizadosFrecuentes: Authorization[] = autorizados?.filter(
     (autorizado: Authorization) => autorizado.tipo === "frecuente"
   );
@@ -56,6 +37,13 @@ export default function Autorizar() {
   const autorizadosEventuales: Authorization[] = autorizados?.filter(
     (autorizado: Authorization) => autorizado.tipo === "eventual"
   );
+
+  const amountOfAutorizados = autorizados?.length;
+
+  const amountOfAutorizadosByType: AmountOfAutorizadosByType = {
+    frecuente: autorizadosFrecuentes?.length,
+    eventual: autorizadosEventuales?.length,
+  };
 
   return (
     <main className="relative h-full">
@@ -69,16 +57,23 @@ export default function Autorizar() {
         Visitas frecuentes
       </h2>
       <section className="mt-2 flex flex-col gap-4">
-        {autorizadosFrecuentes &&
+        {!isPending &&
+        (!autorizadosFrecuentes || autorizadosFrecuentes.length === 0) ? (
+          <p className="text-gris-500">No hay visitas frecuentes</p>
+        ) : null}
+        {!isPending &&
+          !error &&
+          autorizadosFrecuentes &&
           autorizadosFrecuentes.map((autorizado) => (
             <AuthorizedCard
               key={"autorizado-frecuente-" + autorizado.id}
-              visita_id={autorizado.visita_id}
               id={autorizado.id}
-              // name={user.name}
-              // dni={autorizado.dni}
+              nombre={autorizado.visita.nombre}
+              apellido={autorizado.visita.apellido}
+              dni={autorizado.visita.dni}
               tipo={autorizado.tipo}
               deleteHandler={() => {
+                console.log("User to be deleted:", autorizado);
                 setUserBeingDeleted(autorizado);
                 setDeletingUser(true);
               }}
@@ -89,16 +84,24 @@ export default function Autorizar() {
         Visitas eventuales
       </h2>
       <section className="mt-2 flex flex-col gap-4">
-        {autorizadosEventuales &&
+        {!isPending &&
+        (!autorizadosEventuales || autorizadosEventuales.length === 0) ? (
+          <p className="text-gris-500">No hay visitas eventuales</p>
+        ) : null}
+        {!isPending &&
+          !error &&
+          autorizadosEventuales &&
           autorizadosEventuales.map((autorizado) => (
             <AuthorizedCard
               key={"autorizado-frecuente-" + autorizado.id}
-              visita_id={autorizado.visita_id}
               id={autorizado.id}
-              // name={user.name}
-              // dni={autorizado.dni}
+              nombre={autorizado.visita.nombre}
+              apellido={autorizado.visita.apellido}
+              dni={autorizado.visita.dni}
               tipo={autorizado.tipo}
+              dia={autorizado.dia}
               deleteHandler={() => {
+                console.log("User to be deleted:", autorizado);
                 setUserBeingDeleted(autorizado);
                 setDeletingUser(true);
               }}
@@ -106,7 +109,10 @@ export default function Autorizar() {
           ))}
       </section>
       <button
-        className="absolute right-0 bottom-8 w-16 h-16 rounded-full flex items-center justify-center bg-verde-500"
+        className={`absolute right-0 bottom-8 w-16 h-16 rounded-full flex items-center justify-center ${
+          amountOfAutorizados >= 4 ? "bg-gris-400" : "bg-verde-500"
+        }`}
+        disabled={amountOfAutorizados >= 4}
         onClick={() => setModalOpen((prev) => !prev)}
       >
         <UserPlus className="h-8 w-8 text-white" />
@@ -115,9 +121,13 @@ export default function Autorizar() {
       <DeleteUserDrawer
         open={isDeletingUser}
         setOpen={setDeletingUser}
-        user={userBeingDeleted}
+        autorizacion={userBeingDeleted}
       />
-      <NewAuthorizationDrawer open={modalOpen} setOpen={setModalOpen} />
+      <NewAuthorizationDrawer
+        open={modalOpen}
+        setOpen={setModalOpen}
+        amountOfAutorizadosByType={amountOfAutorizadosByType}
+      />
     </main>
   );
 }

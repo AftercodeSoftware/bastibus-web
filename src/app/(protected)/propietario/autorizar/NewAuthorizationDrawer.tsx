@@ -6,20 +6,26 @@ import PageContainer from "@/components/PageContainer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
+import { addAutorizado } from "@/utils/clientPromises";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Dialog, DialogTitle } from "@radix-ui/react-dialog";
+import { useQueryClient } from "@tanstack/react-query";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Drawer } from "vaul";
 import { z } from "zod";
 import { DatePicker } from "./DatePicker";
+import { AmountOfAutorizadosByType } from "./page";
 
 interface AuthorizationModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
+  amountOfAutorizadosByType: AmountOfAutorizadosByType;
 }
 
 export function NewAuthorizationDrawer({
   open,
   setOpen,
+  amountOfAutorizadosByType,
 }: AuthorizationModalProps) {
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
@@ -27,6 +33,10 @@ export function NewAuthorizationDrawer({
       <Drawer.Portal>
         <Drawer.Handle />
         <Drawer.Content className="text-black text-center fixed z-10 bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[80%]">
+          <Drawer.Description className="hidden">
+            Agregar autorizado
+          </Drawer.Description>
+          <Drawer.Title className="hidden">Agregar autorizado</Drawer.Title>
           <Drawer.Handle className="my-4" />
           <PageContainer className="py-4">
             <h2 className="text-gris-800 font-medium text-xl">
@@ -35,7 +45,10 @@ export function NewAuthorizationDrawer({
             <span className="text-base text-gris-400">
               Completa los datos de la persona a autorizar.
             </span>
-            <NewAuthorizationForm />
+            <NewAuthorizationForm
+              setOpen={setOpen}
+              amountOfAutorizadosByType={amountOfAutorizadosByType}
+            />
           </PageContainer>
         </Drawer.Content>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
@@ -69,9 +82,15 @@ export const FormDataSchema = z.object({
     }, "La fecha debe ser mayor o igual a la fecha actual."),
 });
 
-type Inputs = z.infer<typeof FormDataSchema>;
+export type AuthorizationInputs = z.infer<typeof FormDataSchema>;
 
-function NewAuthorizationForm() {
+function NewAuthorizationForm({
+  setOpen,
+  amountOfAutorizadosByType,
+}: {
+  setOpen: (open: boolean) => void;
+  amountOfAutorizadosByType: AmountOfAutorizadosByType;
+}) {
   const {
     control,
     register,
@@ -79,19 +98,24 @@ function NewAuthorizationForm() {
     reset,
     watch,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<AuthorizationInputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
+  const queryClient = useQueryClient();
+
   const currentAuthorizationType = watch("authorizationType");
 
-  const processForm: SubmitHandler<Inputs> = async (data) => {
+  const processForm: SubmitHandler<AuthorizationInputs> = async (data) => {
     try {
-      alert("Data submitted successfully, check the console for the data.");
-      console.log(data);
+      addAutorizado(data);
+      setTimeout(() => {
+        queryClient.resetQueries({ queryKey: ["autorizados"], exact: true });
+      }, 1500);
     } catch (e) {
       console.log(e);
     } finally {
+      setOpen(false);
       reset();
     }
   };
@@ -130,6 +154,7 @@ function NewAuthorizationForm() {
       </FormField>
       <AuthorizationTypeSelector
         register={register}
+        amountOfAutorizadosByType={amountOfAutorizadosByType}
         errorMessage={errors.authorizationType?.message}
       />
 
@@ -158,16 +183,14 @@ function NewAuthorizationForm() {
   );
 }
 
-function AuthorizationDateSelector({}) {
-  return <div>asd</div>;
-}
-
 function AuthorizationTypeSelector({
   register,
   errorMessage,
+  amountOfAutorizadosByType,
 }: {
   register: any;
   errorMessage?: string;
+  amountOfAutorizadosByType: AmountOfAutorizadosByType;
 }) {
   return (
     <div className="mb-4">
@@ -175,20 +198,30 @@ function AuthorizationTypeSelector({
         Tipo de autorizacion
       </label>
       <div className="flex flex-row gap-2 mt-2">
-        <div className="flex items-center space-x-2">
+        <div
+          className={`flex items-center space-x-2 ${
+            amountOfAutorizadosByType.eventual >= 2 ? "text-gray-300" : ""
+          }`}
+        >
           <input
             type="radio"
             value="eventual"
             id="eventual"
+            disabled={amountOfAutorizadosByType.eventual >= 2}
             {...register("authorizationType")}
           />
           <Label htmlFor="eventual">EVENTUAL</Label>
         </div>
-        <div className="flex items-center space-x-2">
+        <div
+          className={`flex items-center space-x-2 ${
+            amountOfAutorizadosByType.frecuente >= 2 ? "text-gray-300" : ""
+          }`}
+        >
           <input
             type="radio"
             value="frecuente"
             id="frecuente"
+            disabled={amountOfAutorizadosByType.frecuente >= 2}
             {...register("authorizationType")}
           />
           <Label htmlFor="frecuente">FRECUENTE</Label>
