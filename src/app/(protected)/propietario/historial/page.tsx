@@ -16,6 +16,14 @@ export default function Historial() {
     queryFn: () => getUltimosViajes(),
   });
 
+  useEffect(() => {
+    console.log("Ultimos viajes: ", ultimosViajes);
+  }, [ultimosViajes]);
+
+  const ultimosViajesFinalizados = ultimosViajes?.filter(
+    (recorrido: any) => recorrido.estado !== "curso"
+  );
+
   return (
     <div>
       <img
@@ -27,7 +35,7 @@ export default function Historial() {
       <div className="flex flex-col gap-3 pb-24 mt-2">
         {!isPending &&
           !error &&
-          ultimosViajes.map((recorrido: any) => (
+          ultimosViajesFinalizados.map((recorrido: any) => (
             <TripCard
               key={"horario-recorrido-" + recorrido.id}
               ride={recorrido}

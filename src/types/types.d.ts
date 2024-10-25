@@ -69,6 +69,13 @@ export interface UserTrip {
   idavuelta: number;
   propietario_id: number;
   autorizacion_id: number;
+  autorizacion: {
+    tipo: "frecuente" | "eventual";
+    visita: {
+      apellido: string;
+      nombre: string;
+    };
+  };
   coordenadasubida: string;
   horasubida: string;
   coordenadabajada: string;
@@ -87,4 +94,11 @@ export interface Authorization {
   hasta: string; // Time or datetime, depending on your data structure
   usos: number;
   created_at: string; // Date in ISO format
+  visita: {
+    nombre: string;
+    apellido: string;
+    created_at: string;
+    dni: string;
+    id: number;
+  };
 }
