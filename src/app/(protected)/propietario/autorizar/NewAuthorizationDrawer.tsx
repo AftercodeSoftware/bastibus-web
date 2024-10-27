@@ -113,7 +113,7 @@ function NewAuthorizationForm({
         queryClient.resetQueries({ queryKey: ["autorizados"], exact: true });
       }, 1500);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     } finally {
       setOpen(false);
       reset();

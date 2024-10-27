@@ -1,13 +1,3 @@
-import { ShieldPlus, Trash2, UserCog } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  // CardTitle,
-} from "../ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { Propietario } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,11 +9,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Propietario } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
+import { ShieldPlus, Trash2, UserCog } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
-import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { crearPropietario } from "@/lib/createNewPropietario";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 
 export const FormDataSchema = z.object({
   id: z.string(),
@@ -78,8 +72,10 @@ export default function PropietariosCard({
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     try {
-      console.log("wait");
       const response = await crearPropietario(data as Propietario);
+      if (!response) {
+        return;
+      }
       // console.log(response);
       if (response.ok) {
         // Close the Dialog here
@@ -104,7 +100,7 @@ export default function PropietariosCard({
       //   router.push("/propietario");
       // }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     } finally {
       reset();
     }

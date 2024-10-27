@@ -8,8 +8,6 @@ export const crearPropietario = async (propietario: Propietario) => {
       password: propietario.manzana + propietario.lote,
     });
 
-    console.log(usuario);
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/propietarios/create`,
       {

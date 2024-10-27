@@ -73,7 +73,6 @@ export default function Autorizar() {
               dni={autorizado.visita.dni}
               tipo={autorizado.tipo}
               deleteHandler={() => {
-                console.log("User to be deleted:", autorizado);
                 setUserBeingDeleted(autorizado);
                 setDeletingUser(true);
               }}
@@ -101,7 +100,6 @@ export default function Autorizar() {
               tipo={autorizado.tipo}
               dia={autorizado.dia}
               deleteHandler={() => {
-                console.log("User to be deleted:", autorizado);
                 setUserBeingDeleted(autorizado);
                 setDeletingUser(true);
               }}

@@ -6,8 +6,8 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const metadata: Metadata = {
-  title: "React Query Devtools",
+export const metadata: Metadata = {
+  title: "Bastibus",
 };
 
 export default function RootLayout({

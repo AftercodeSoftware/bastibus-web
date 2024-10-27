@@ -4,7 +4,6 @@ import RideCard from "@/components/pages/propietario/RideCard";
 import TripCard from "@/components/pages/propietario/TripCard";
 import { getUltimosViajes } from "@/utils/clientPromises";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
 
 export default function Historial() {
   const {
@@ -15,14 +14,6 @@ export default function Historial() {
     queryKey: ["ultimos-viajes"],
     queryFn: () => getUltimosViajes(),
   });
-
-  useEffect(() => {
-    console.log("Ultimos viajes: ", ultimosViajes);
-  }, [ultimosViajes]);
-
-  const ultimosViajesFinalizados = ultimosViajes?.filter(
-    (recorrido: any) => recorrido.estado !== "curso"
-  );
 
   return (
     <div>
@@ -35,7 +26,7 @@ export default function Historial() {
       <div className="flex flex-col gap-3 pb-24 mt-2">
         {!isPending &&
           !error &&
-          ultimosViajesFinalizados.map((recorrido: any) => (
+          ultimosViajes.map((recorrido: any) => (
             <TripCard
               key={"horario-recorrido-" + recorrido.id}
               ride={recorrido}

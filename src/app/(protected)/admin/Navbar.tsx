@@ -1,6 +1,8 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
 import { BusFront, Home, Settings } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,8 +18,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import { usePathname, useRouter } from "next/navigation";
 interface RouteLink {
   text: string;
   route: string;
@@ -47,7 +49,6 @@ export default function Navbar() {
         credentials: "include",
       }
     );
-    console.log(response);
     if (!response.ok) {
       console.error("Error al cerrar sesión");
       return;

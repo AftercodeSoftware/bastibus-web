@@ -35,7 +35,6 @@ function LoginForm() {
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     try {
-      console.log("wait");
       await login(data.email, data.password);
     } catch (e) {
       console.log(e);

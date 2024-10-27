@@ -1,11 +1,13 @@
-"use client";
-
 // import { UserResponse } from "@/pages/api/me";
 import ProtectedLayout from "@/components/ProtectedLayout";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import React from "react";
 import Header from "./Header";
 import Navbar from "./Navbar";
+
+export const metadata = {
+  title: "Bastibus - Admin",
+};
 
 export default function RootLayout({
   children,

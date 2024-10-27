@@ -1,8 +1,9 @@
 "use client";
 
 import { AuthorizationInputs } from "@/app/(protected)/propietario/autorizar/NewAuthorizationDrawer";
+import { BusRide } from "@/types/types";
 
-export async function getRecorridos() {
+export async function getRecorridos(): Promise<BusRide[]> {
   return fetch(`${process.env.NEXT_PUBLIC_SERVER_IP}/recorridos` || "", {
     method: "GET",
     headers: {

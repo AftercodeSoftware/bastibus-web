@@ -52,7 +52,6 @@ export default function SignInForm() {
       }
 
       const responseData = await response.json();
-      console.log(responseData);
 
       const recorridos = await fetch("/api/recorridos", {
         method: "GET",
@@ -62,7 +61,7 @@ export default function SignInForm() {
       });
 
       const recorridosData = await recorridos.json();
-      console.log(recorridosData);
+
       if (responseData.session) {
         // const user = SupabaseAuthClient.auth.user(); // Obtiene la información del usuario autenticado
         // return user ? user.id : null;

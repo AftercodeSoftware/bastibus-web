@@ -39,6 +39,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           }
         );
 
+        if (!response.ok) {
+          throw new Error("Not authenticated");
+        }
+
         const data = await response.json();
 
         if (data) {
@@ -77,8 +81,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     } else if (data.rol === "administrador") {
       router.replace("/admin/dashboard");
     }
-
-    console.log("Data: ", data);
 
     if (data.error) {
       throw new Error(data.error);

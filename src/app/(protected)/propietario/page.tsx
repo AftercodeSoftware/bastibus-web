@@ -7,7 +7,7 @@ import { BusRide, UserTrip } from "@/types/types";
 import { getRecorridos, getUltimosViajes } from "@/utils/clientPromises";
 import { useQuery } from "@tanstack/react-query";
 import { BusFront, IdCard, Navigation } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useMemo } from "react";
 
 export default function Page() {
   const { user } = useUser();
@@ -25,14 +25,24 @@ export default function Page() {
     error: errorUltimosViajes,
     data: ultimosViajes,
   } = useQuery({
-    queryKey: ["ultimos-viajes"],
-    queryFn: () => getUltimosViajes(4),
+    queryKey: ["ultimos-viajes-3"],
+    queryFn: () => getUltimosViajes(3),
     enabled: !!user?.id,
   });
 
-  useEffect(() => {
-    console.log({ recorridos, ultimosViajes });
-  }, [recorridos, ultimosViajes]);
+  // Filter the recorridos to only show the current one, between salidabarrio and llegadabarrio
+
+  const currentRide = useMemo(() => {
+    if (!recorridos) return null;
+
+    const currentDate = new Date();
+    const currentTime = currentDate.toTimeString().split(" ")[0];
+
+    return recorridos?.find(
+      (ride) =>
+        ride.salidabarrio <= currentTime && ride.llegadabarrio >= currentTime
+    );
+  }, [recorridos]);
 
   return (
     <main>
@@ -47,8 +57,12 @@ export default function Page() {
         {user?.nombre} {user?.apellido}
       </p>
 
-      {!isPendingRecorridos && <CurrentRideSection busRide={recorridos[0]} />}
+      {!isPendingRecorridos && currentRide && (
+        <CurrentRideSection busRide={currentRide} />
+      )}
+      {errorRecorridos && <p>Error al cargar recorridos</p>}
       {!isPendingUltimosViajes && <LastTripsSection trips={ultimosViajes} />}
+      {errorUltimosViajes && <p>Error al cargar ultimos viajes</p>}
     </main>
   );
 }
@@ -74,7 +88,7 @@ function LastTripsSection({ trips }: { trips: UserTrip[] }) {
       </h2>
       <div className="flex flex-col gap-2">
         {trips.map((trip) => (
-          <TripCard ride={trip} />
+          <TripCard key={"trip-" + trip.id} ride={trip} />
         ))}
       </div>
     </section>

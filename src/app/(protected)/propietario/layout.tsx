@@ -1,5 +1,10 @@
 import PageContainer from "@/components/PageContainer";
 import BottomBar from "@/components/pages/propietario/BottomBar";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Bastibus - Panel",
+};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

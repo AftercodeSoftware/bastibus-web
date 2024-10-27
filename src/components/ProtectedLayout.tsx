@@ -13,10 +13,16 @@ const ProtectedLayout = ({ children, requiredRole }: ProtectedLayoutProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    // If no user or if the role does not match, redirect
-    if (!user || user.rol !== requiredRole) {
-      // router.push("/login"); // Or an unauthorized page
-      console.log("Invalid role: ", user);
+    if (!user?.rol) {
+      return;
+    }
+
+    if (user.rol !== requiredRole) {
+      if (user.rol === "administrador") {
+        router.replace("/admin");
+      } else if (user.rol === "propietario") {
+        router.replace("/propietario");
+      }
     }
   }, [user, requiredRole, router]);
 

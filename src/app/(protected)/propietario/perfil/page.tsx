@@ -20,7 +20,7 @@ export default function Perfil() {
         credentials: "include",
       }
     );
-    console.log(response);
+
     if (!response.ok) {
       console.error("Error al cerrar sesión");
       return;

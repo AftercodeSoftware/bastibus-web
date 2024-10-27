@@ -43,7 +43,6 @@ function SignUpForm() {
     // const result = await login(data);
 
     if (!result) {
-      console.log("Something went wrong");
       return;
     }
 
