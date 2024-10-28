@@ -1,12 +1,12 @@
 "use client";
 
-import SimpleCard from "@/components/dashboard/SimpleCard";
-import { BusFront, CircleX } from "lucide-react";
 import PieChart from "@/components/dashboard/PieChart";
 import PropietariosCard from "@/components/dashboard/PropietariosCard";
-import { useEffect } from "react";
+import SimpleCard from "@/components/dashboard/SimpleCard";
+import { Usuario } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import { Propietario } from "@/types/types";
+import { BusFront, CircleX } from "lucide-react";
+import { useEffect } from "react";
 
 interface DashboardData {
   cantidadIrregularidades: number;
@@ -18,7 +18,7 @@ interface DashboardData {
     movimientosPropietarios: number;
     movimientosAutorizados: number;
   };
-  propietariosPendientes: Propietario[];
+  propietariosPendientes: Usuario[];
 }
 
 export default function Dashboard() {

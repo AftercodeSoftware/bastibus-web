@@ -1,7 +1,6 @@
-import { BasicUser } from "@/types/types";
 import { motion } from "framer-motion";
 
-import { Calendar, Trash2, TrashIcon } from "lucide-react";
+import { Calendar, Trash2 } from "lucide-react";
 import React from "react";
 
 interface AuthorizedCardProps {
@@ -15,7 +14,6 @@ interface AuthorizedCardProps {
 }
 
 export default function AuthorizedCard({
-  id,
   nombre,
   apellido,
   dni,

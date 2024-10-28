@@ -11,7 +11,7 @@ export default function LoginCard({
 }) {
   return (
     <div
-      className={`relative bg-white rounded-lg p-8 sm:p-10 shadow-sm w-full md:w-1/3`}
+      className={`relative bg-white rounded-lg p-8 sm:p-10 shadow-sm w-full md:w-1/3 ${className}`}
       {...props}
     >
       {children}

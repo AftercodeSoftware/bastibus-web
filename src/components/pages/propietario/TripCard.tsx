@@ -1,6 +1,6 @@
 import { useUser } from "@/context/UserContext";
-import { BusType, UserTrip } from "@/types/types";
-import { Bus, BusFront, Calendar, User } from "lucide-react";
+import { UserTrip } from "@/types/types";
+import { Calendar, User } from "lucide-react";
 
 interface TripCardProps {
   ride: UserTrip;

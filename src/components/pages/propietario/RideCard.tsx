@@ -1,5 +1,5 @@
-import { BusRide, BusType } from "@/types/types";
-import { Bus, BusFront, GitCommitHorizontal } from "lucide-react";
+import { BusRide } from "@/types/types";
+import { BusFront, GitCommitHorizontal } from "lucide-react";
 
 interface RideCardProps {
   ride: BusRide;
@@ -12,7 +12,6 @@ const cardColors = {
 };
 
 export default function RideCard({ ride }: RideCardProps) {
-  console.log("Ride:", ride);
   return (
     <div
       style={{ borderColor: cardColors[ride.tipo] }}

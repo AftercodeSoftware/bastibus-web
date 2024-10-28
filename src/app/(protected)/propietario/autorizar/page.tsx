@@ -1,12 +1,11 @@
 "use client";
 
 import { NewAuthorizationDrawer } from "@/app/(protected)/propietario/autorizar/NewAuthorizationDrawer";
-import Button from "@/components/Button";
-import { Authorization, BasicUser } from "@/types/types";
+import { Authorization } from "@/types/types";
 import { getAutorizados } from "@/utils/clientPromises";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { UserPlus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AuthorizedCard from "./AuthorizedCard";
 import { DeleteUserDrawer } from "./DeleteUserDrawer";
 

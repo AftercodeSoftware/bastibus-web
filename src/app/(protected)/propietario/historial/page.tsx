@@ -1,6 +1,5 @@
 "use client";
 
-import RideCard from "@/components/pages/propietario/RideCard";
 import TripCard from "@/components/pages/propietario/TripCard";
 import { getUltimosViajes } from "@/utils/clientPromises";
 import { useQuery } from "@tanstack/react-query";

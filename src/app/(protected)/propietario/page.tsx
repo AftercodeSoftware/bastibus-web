@@ -6,7 +6,7 @@ import { useUser } from "@/context/UserContext";
 import { BusRide, UserTrip } from "@/types/types";
 import { getRecorridos, getUltimosViajes } from "@/utils/clientPromises";
 import { useQuery } from "@tanstack/react-query";
-import { BusFront, IdCard, Navigation } from "lucide-react";
+import { BusFront, Navigation } from "lucide-react";
 import React, { useMemo } from "react";
 
 export default function Page() {
@@ -94,23 +94,6 @@ function LastTripsSection({ trips }: { trips: UserTrip[] }) {
         {trips.map((trip) => (
           <TripCard key={"trip-" + trip.id} ride={trip} />
         ))}
-      </div>
-    </section>
-  );
-}
-
-function AuthorizationsSection() {
-  return (
-    <section className="mt-6">
-      <h2 className="text-xl text-gris-950 flex items-center gap-2 mb-2 font-medium">
-        <IdCard className="text-gris-600" />
-        Autorizados vigentes
-      </h2>
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col py-4 px-6 rounded-xl overflow-hidden w-full bg-white min-h-20 shadow-md border">
-          <span className="font-bold">Gabriel Pérez Diez</span>
-          <span>43637470</span>
-        </div>
       </div>
     </section>
   );
