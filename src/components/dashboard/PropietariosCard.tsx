@@ -83,22 +83,6 @@ export default function PropietariosCard({
           .querySelector('[data-state="open"]')
           ?.setAttribute("data-state", "closed");
       }
-
-      // if (!result) {
-      //   console.log("Something went wrong");
-      //   return;
-      // }
-
-      // if (result.error) {
-      //   setGeneralError(result.error.toString());
-      //   return;
-      // }
-
-      // if (result.rol === "administrador") {
-      //   router.push("/admin");
-      // } else if (result.rol === "propietario") {
-      //   router.push("/propietario");
-      // }
     } catch (e) {
       console.error(e);
     } finally {
@@ -107,7 +91,7 @@ export default function PropietariosCard({
   };
 
   return (
-    <Card x-chunk="dashboard-05-chunk-1" className="min-w-1/2">
+    <Card x-chunk="dashboard-05-chunk-1" className="flex-1">
       <CardHeader className="pb-2">
         <div className="flex justify-between">
           <CardTitle className="">Propietarios pendientes</CardTitle>

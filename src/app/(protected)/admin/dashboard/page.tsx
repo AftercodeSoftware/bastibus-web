@@ -3,6 +3,7 @@
 import PieChart from "@/components/dashboard/PieChart";
 import PropietariosCard from "@/components/dashboard/PropietariosCard";
 import SimpleCard from "@/components/dashboard/SimpleCard";
+import { useUser } from "@/context/UserContext";
 import { Usuario } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { BusFront, CircleX } from "lucide-react";
@@ -37,6 +38,7 @@ export default function Dashboard() {
       return response.json();
     },
   });
+  const { user } = useUser();
 
   useEffect(() => {
     if (data) {
@@ -73,8 +75,14 @@ export default function Dashboard() {
     : [];
 
   return (
-    <div className="chart-wrapper  flex max-w-[90%] flex-col items-center gap-6 p-6 sm:p-8">
-      <div className="flex flex-row gap-6 w-full">
+    <div className="chart-wrapper flex flex-col items-center gap-6 p-6 sm:p-8">
+      <h1 className="text-black self-start text-2xl">
+        Hola de nuevo,{" "}
+        <b>
+          {user?.nombre} {user?.apellido}
+        </b>
+      </h1>
+      <div className="flex flex-row gap-6 w-full justify-between">
         <SimpleCard
           title="Usos inadecuados"
           number={data?.cantidadIrregularidades}

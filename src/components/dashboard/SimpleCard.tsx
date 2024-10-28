@@ -19,7 +19,7 @@ export default function SimpleCard({
   subtitle?: string;
 }) {
   return (
-    <Card x-chunk="dashboard-05-chunk-1" className="w-[25%]">
+    <Card x-chunk="dashboard-05-chunk-1" className="flex-1">
       <CardHeader className="pb-2">
         <div className="flex justify-between">
           <CardDescription>{title}</CardDescription>

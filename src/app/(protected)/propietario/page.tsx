@@ -38,14 +38,20 @@ export default function Page() {
     const currentDate = new Date();
     const currentTime = currentDate.toTimeString().split(" ")[0];
 
-    const filteredRecorridos = recorridos?.find(
+    let currentRecorrido = recorridos?.find(
       (ride) =>
         ride.salidabarrio <= currentTime && ride.llegadabarrio >= currentTime
     );
 
-    if (!filteredRecorridos) return recorridos[0];
+    if (!currentRecorrido) {
+      currentRecorrido = recorridos.find(
+        (ride) => ride.salidabarrio >= currentTime
+      );
+    }
 
-    return filteredRecorridos;
+    if (!currentRecorrido) return recorridos[0];
+
+    return currentRecorrido;
   }, [recorridos]);
 
   return (
