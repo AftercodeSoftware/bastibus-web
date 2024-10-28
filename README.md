@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# Bastibus Web
 
-First, run the development server:
+Este proyecto es una aplicación web desarrollada con [Next.js](https://nextjs.org/) y [TypeScript](https://www.typescriptlang.org/), utilizando [Tailwind CSS](https://tailwindcss.com/) para el diseño.
+
+## Requisitos Previos
+
+Asegurate tener instalado:
+
+- [Node.js](https://nodejs.org/) (versión 16 o superior)
+- [npm](https://www.npmjs.com/) o [yarn](https://yarnpkg.com/), dependiendo de tu preferencia y del gestor de paquetes utilizado en este proyecto
+
+## Configuración Inicial
+
+1. **Clona el repositorio**
+
+   ```bash
+   git clone https://github.com/tu-usuario/bastibus-web.git
+   cd bastibus-web
+   ```
+
+2. **Instala las dependencias**
+
+   Con `npm`:
+
+   ```bash
+   npm install
+   ```
+
+   o con `yarn`:
+
+   ```bash
+   yarn install
+   ```
+
+3. **Configura las variables de entorno**
+
+   El proyecto contiene un archivo `.env.example` (o `.env` si ya está configurado) con las variables de entorno necesarias. Duplica este archivo como `.env` y completa las variables según las necesidades:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Modifica el archivo `.env` con las credenciales y configuraciones necesarias.
+
+4. **Compilación Tailwind CSS**
+
+   Asegúrate de que `postcss.config.mjs` y `tailwind.config.ts` estén configurados correctamente para que Tailwind funcione bien con Next.js.
+
+## Scripts Disponibles
+
+- **`npm run dev`**: Inicia el servidor de desarrollo.
+- **`npm run build`**: Compila la aplicación para producción.
+- **`npm run start`**: Inicia la aplicación en modo de producción.
+- **`npm run lint`**: Ejecuta el linter para analizar el código en busca de errores y mantener la calidad del código.
+
+## Estructura del Proyecto
+
+- **`src/`**: Contiene el código fuente principal de la aplicación.
+- **`public/`**: Archivos públicos, incluyendo imágenes y otros recursos estáticos.
+- **`components.json`**: Configuración de componentes.
+- **`next.config.mjs`**: Configuración específica de Next.js.
+- **`tailwind.config.ts`**: Configuración para Tailwind CSS.
+- **`.eslintrc.json`**: Configuración para ESLint.
+
+## Guía para Desarrolladores
+
+### 1. Inicia el Servidor de Desarrollo
+
+Para comenzar a desarrollar, inicia el servidor de desarrollo de Next.js:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+El proyecto estará disponible en `http://localhost:3000`. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Realiza Cambios en Tiempo Real
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Next.js permite la recarga en caliente, por lo que puedes ver los cambios en tiempo real al guardar tus archivos.
 
-## Learn More
+### 3. Buenas Prácticas de Código
 
-To learn more about Next.js, take a look at the following resources:
+- Sigue las reglas de ESLint configuradas en `.eslintrc.json`.
+- Usa componentes y estilos de Tailwind conforme a las directrices en `tailwind.config.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Despliegue
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Para preparar el proyecto para producción:
 
-## Deploy on Vercel
+```bash
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Este comando genera la versión optimizada de la aplicación en la carpeta `.next/`, lista para desplegar en cualquier servidor compatible con Node.js.
