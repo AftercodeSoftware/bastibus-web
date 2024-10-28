@@ -2,15 +2,16 @@
 
 import Button from "@/components/Button";
 import { Input } from "@/components/ui/input";
+import { signUp } from "@/utils/clientPromises";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect, useRouter } from "next/navigation";
-import { FormEvent, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
 export const FormDataSchema = z.object({
   manzana: z.string().min(1, "La manzana es requerida."),
-  casa: z.string().min(1, "La casa es requerida."),
+  lote: z.string().min(1, "El lote es requerido."),
   nombre: z.string().min(1, "El nombre es requerido."),
   apellido: z.string().min(1, "El apellido es requerido."),
   dni: z.string().min(1, "El DNI es requerido."),
@@ -18,46 +19,36 @@ export const FormDataSchema = z.object({
     .string()
     .email("El email no es válido.")
     .min(1, "El email es requerido."),
-  celular: z.string(),
+  phone: z.string().min(1, "El celular es requerido."),
 });
 
-type Inputs = z.infer<typeof FormDataSchema>;
+export type SignUpInputs = z.infer<typeof FormDataSchema>;
 
 function SignUpForm() {
-  const [data, setData] = useState<Inputs>();
-  const [generalError, setGeneralError] = useState<string>();
-
+  const [globalError, setGlobalError] = useState<string>();
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<SignUpInputs>({
     resolver: zodResolver(FormDataSchema),
   });
 
-  const processForm: SubmitHandler<Inputs> = async (data) => {
-    // const result = await login(data);
-
-    if (!result) {
-      return;
+  const processForm: SubmitHandler<SignUpInputs> = async (data) => {
+    try {
+      const result = await signUp(data);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      router.replace("/sign-up/success");
+    } catch (e: any) {
+      setGlobalError(e.message);
+    } finally {
+      reset();
     }
-
-    if (result.error) {
-      setGeneralError(result.error.toString());
-      return;
-    }
-
-    if (result.rol === "administrador") {
-      router.push("/admin/dashboard");
-    } else if (result.rol === "propietario") {
-      router.push("/propietario");
-    }
-
-    reset();
   };
 
   return (
@@ -81,17 +72,17 @@ function SignUpForm() {
           )}
         </div>
         <div>
-          <label htmlFor="casa" className="font-medium">
-            Casa *
+          <label htmlFor="lote" className="font-medium">
+            Lote *
           </label>
           <Input
-            {...register("casa")}
+            {...register("lote")}
             type="text"
-            name="casa"
-            placeholder="Casa..."
+            name="lote"
+            placeholder="Lote..."
           />
-          {errors.casa?.message && (
-            <p className="text-sm text-error">{errors.casa.message}</p>
+          {errors.lote?.message && (
+            <p className="text-sm text-error">{errors.lote.message}</p>
           )}
         </div>
       </div>
@@ -152,19 +143,24 @@ function SignUpForm() {
         )}
       </div>
       <div>
-        <label htmlFor="celular" className="font-medium">
+        <label htmlFor="phone" className="font-medium">
           Celular
         </label>
         <Input
-          {...register("celular")}
+          {...register("phone")}
           type="text"
-          name="celular"
+          name="phone"
           placeholder="Celular..."
         />
-        {errors.celular?.message && (
-          <p className="text-sm text-error">{errors.celular.message}</p>
+        {errors.phone?.message && (
+          <p className="text-sm text-error">{errors.phone.message}</p>
         )}
       </div>
+      {globalError && (
+        <p className="text-error font-semibold text-sm self-center">
+          {globalError}
+        </p>
+      )}
 
       <Button className="w-full">Solicitar registro</Button>
     </form>

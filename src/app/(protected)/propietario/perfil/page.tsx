@@ -55,18 +55,12 @@ export default function Perfil() {
           <div className="flex justify-between">
             <span className="text-gris-500">Lote </span>
             <span className="text-gris-950 font-semibold">
-              {user?.manzana}-{user?.lote}
+              M{user?.manzana} - L{user?.lote}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gris-500">Teléfono</span>
             <span className="text-gris-950 font-semibold">{user?.phone}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gris-500">Creación</span>
-            <span className="text-gris-950 font-semibold">
-              {user?.created_at}
-            </span>
           </div>
         </div>
       </div>

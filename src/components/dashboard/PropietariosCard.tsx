@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Propietario } from "@/types/types";
+import { Usuario } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { ShieldPlus, Trash2, UserCog } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -37,7 +37,7 @@ type Inputs = z.infer<typeof FormDataSchema>;
 export default function PropietariosCard({
   propietarios,
 }: {
-  propietarios?: Propietario[];
+  propietarios?: Usuario[];
 }) {
   const {
     handleSubmit,
@@ -48,7 +48,7 @@ export default function PropietariosCard({
     resolver: zodResolver(FormDataSchema),
   });
 
-  const { data, error, isLoading } = useQuery<Propietario[]>({
+  const { data, error, isLoading } = useQuery<Usuario[]>({
     queryKey: ["propietarios-pendientes"],
     queryFn: async () => {
       const response = await fetch(
@@ -72,7 +72,7 @@ export default function PropietariosCard({
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     try {
-      const response = await crearPropietario(data as Propietario);
+      const response = await crearPropietario(data as Usuario);
       if (!response) {
         return;
       }

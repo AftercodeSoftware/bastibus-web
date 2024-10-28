@@ -1,12 +1,15 @@
-import { Propietario } from "@/types/types";
+import { Usuario } from "@/types/types";
 
-export const crearPropietario = async (propietario: Propietario) => {
+export const crearPropietario = async (propietario: Usuario) => {
   try {
-    const usuario = (propietario = {
+    const manzana = propietario.manzana || "";
+    const lote = propietario.lote || "";
+
+    const usuario = {
       ...propietario,
       rol: "propietario",
-      password: propietario.manzana + propietario.lote,
-    });
+      password: manzana + lote,
+    };
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/propietarios/create`,

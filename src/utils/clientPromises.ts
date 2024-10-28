@@ -1,6 +1,7 @@
 "use client";
 
 import { AuthorizationInputs } from "@/app/(protected)/propietario/autorizar/NewAuthorizationDrawer";
+import { SignUpInputs } from "@/components/pages/start-login/SignUpForm";
 import { BusRide } from "@/types/types";
 
 export async function getRecorridos(): Promise<BusRide[]> {
@@ -67,5 +68,16 @@ export async function deleteAutorizado(id: number) {
   return fetch(`${process.env.NEXT_PUBLIC_SERVER_IP}/autorizaciones/${id}`, {
     method: "DELETE",
     credentials: "include",
+  }).then((res) => res.json());
+}
+
+export async function signUp(data: SignUpInputs) {
+  return fetch(`${process.env.NEXT_PUBLIC_SERVER_IP}/propietarios/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
   }).then((res) => res.json());
 }

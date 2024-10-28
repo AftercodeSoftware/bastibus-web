@@ -108,7 +108,7 @@ function NewAuthorizationForm({
 
   const processForm: SubmitHandler<AuthorizationInputs> = async (data) => {
     try {
-      addAutorizado(data);
+      await addAutorizado(data);
       setTimeout(() => {
         queryClient.resetQueries({ queryKey: ["autorizados"], exact: true });
       }, 1500);
@@ -130,9 +130,9 @@ function NewAuthorizationForm({
         register={{ ...register("name") }}
         label="Nombre"
         required
-        htmlFor="nombre"
+        htmlFor="name"
       >
-        <Input placeholder="Nombre..." id="nombre" />
+        <Input placeholder="Nombre..." id="name" />
       </FormField>
       <FormField
         errorMessage={errors.surname?.message}
