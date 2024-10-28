@@ -10,12 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Usuario } from "@/types/types";
-import { useQuery } from "@tanstack/react-query";
-import { ShieldPlus, Trash2, UserCog } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  ShieldPlus,
+  Trash2,
+  UserCog,
+  UserRoundMinus,
+  UserRoundPlus,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 import { crearPropietario } from "@/lib/createNewPropietario";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -63,6 +70,9 @@ export default function PropietariosCard({
       return response.json();
     },
   });
+  const queryClient = useQueryClient();
+
+  const [isAddingUser, setIsAddingUser] = useState(false);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -76,16 +86,16 @@ export default function PropietariosCard({
       if (!response) {
         return;
       }
-      // console.log(response);
-      if (response.ok) {
-        // Close the Dialog here
-        document
-          .querySelector('[data-state="open"]')
-          ?.setAttribute("data-state", "closed");
-      }
     } catch (e) {
       console.error(e);
     } finally {
+      setIsAddingUser(false);
+      setTimeout(() => {
+        queryClient.resetQueries({
+          queryKey: ["propietarios-pendientes"],
+          exact: true,
+        });
+      }, 1500);
       reset();
     }
   };
@@ -105,13 +115,22 @@ export default function PropietariosCard({
       <CardContent>
         <div>
           {propietarios?.map((propietario) => (
-            <article className="flex gap-8 items-center" key={propietario.id}>
-              <p className="text-sm">{propietario.nombre}</p>
-              <p className="text-sm text-muted-foreground">{propietario.dni}</p>
+            <article
+              className="flex gap-8 items-center justify-between"
+              key={propietario.id}
+            >
+              <p className="text-sm">
+                {propietario.nombre} {propietario.apellido}
+              </p>
               <p className="text-sm text-muted-foreground">
+                <b>DNI</b> {propietario.dni}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <b>M</b>
                 {propietario.manzana}
               </p>
               <p className="text-sm text-muted-foreground">
+                <b>L</b>
                 {propietario.lote}
               </p>
               <p className="text-sm text-muted-foreground">
@@ -120,12 +139,12 @@ export default function PropietariosCard({
               <p className="text-sm text-muted-foreground">
                 {propietario.phone}
               </p>
-              <aside className="flex items-center gap-2">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline">
-                      <ShieldPlus className="text-green-700 h-5" />
-                    </Button>
+              <aside className=" flex items-center gap-2">
+                <Dialog open={isAddingUser}>
+                  <DialogTrigger onClick={() => setIsAddingUser(true)} asChild>
+                    <button className="p-2 rounded-xl border border-gris-200 hover:bg-gray-50">
+                      <UserRoundPlus className="text-green-700 h-5" />
+                    </button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px] bg-white">
                     <DialogHeader>
@@ -283,8 +302,8 @@ export default function PropietariosCard({
                     </form>
                   </DialogContent>
                 </Dialog>
-                <button className=" p-2 rounded-xl border border-gris-200">
-                  <Trash2 className="text-error h-5" />
+                <button className=" p-2 rounded-xl border border-gris-200 hover:bg-gray-50">
+                  <UserRoundMinus className="text-error h-5" />
                 </button>
               </aside>
             </article>
